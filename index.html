@@ -100,7 +100,7 @@
                     </h2>
                     <div id="collapseFive" class="accordion-collapse collapse" aria-labelledby="headingFive" data-bs-parent="#accordionExample">
                         <div class="accordion-body text-black-50">
-                            <p>Sobrevivieron <span id="losquevivieron"></span> hombres y <span id="losquevivieron"></span> hombres. Y murieron <span id="losquevivieron"></span> hombres y <span id="losquemurieron"></span> mujeres.</p>
+                            <p>Sobrevivieron <span id="Hvivos"></span> hombres y <span id="Mvivos"></span> mujeres. Y murieron <span id="Hmuertos"></span> hombres y <span id="Mmuertos"></span> mujeres.</p>
                             <canvas id="porsexo" width="100" height="100" class="m-5"></canvas>
                         </div>
                     </div>
@@ -235,6 +235,12 @@
                 document.querySelector("#losquevivieron").innerHTML = vivos;
                 document.querySelector("#losquemurieron").innerHTML = muertos;
 
+                document.querySelector("#Hvivos").innerHTML = vivosH;
+                document.querySelector("#Mvivos").innerHTML = vivosM;
+
+                document.querySelector("#Hmuertos").innerHTML = muertosH;
+                document.querySelector("#Mmuertos").innerHTML = muertosM;
+
                 //gráficar edadesreales
                 var menores = [];
                 var medianos = [];
@@ -280,7 +286,7 @@
                 });
 
                 new Chart(document.getElementById("edadista").getContext("2d"), {
-                    type: "pie",
+                    type: "doughnut",
                     data: {
                         labels: ["Menores de Edad", "Adultos jóvenes", "Adultos", "Adultos mayores"],
                         datasets: [{ data: [menores.length, medianos.length, maduros.length, mayores.length], label: "Edades", backgroundColor: ["#a00", "#fc8d59", "#ffffbf", "#91bfdb"] }],
@@ -291,7 +297,10 @@
                     type: "bar",
                     data: {
                         labels: ["vivos", "muertos"],
-                        datasets: [{ data: [vivos, muertos], label: "Sobrevivientes", backgroundColor: ["#9ebcda", "#8856a7"] }],
+                        datasets: [
+                            { data: [vivos], label: "Sobrevivientes", backgroundColor: ["#9ebcda"] },
+                            { data: [muertos], label: "Muertos", backgroundColor: [ "#8856a7"] }
+                        ],
                     },
                 });
 
