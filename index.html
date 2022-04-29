@@ -88,7 +88,7 @@
                     </h2>
                     <div id="collapseFour" class="accordion-collapse collapse" aria-labelledby="headingFour" data-bs-parent="#accordionExample">
                         <div class="accordion-body text-black-50">
-                            <p>Define otro dato.</p>
+                            <p>Sobrevivieron <span id="losquevivieron"></span> y murieron <span id="losquemurieron"></span></p>
                             <canvas id="sobreviven" width="100" height="100" class="m-5"></canvas>
                         </div>
                     </div>
@@ -96,11 +96,12 @@
                 <!--Otro más-->
                 <div class="accordion-item rounded-0">
                     <h2 class="accordion-header" id="headingFive">
-                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive">Otro dato más</button>
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive">Sobrevivientes por sexo</button>
                     </h2>
                     <div id="collapseFive" class="accordion-collapse collapse" aria-labelledby="headingFive" data-bs-parent="#accordionExample">
                         <div class="accordion-body text-black-50">
-                            <p>Define otro dato más.</p>
+                            <p>Sobrevivieron <span id="losquevivieron"></span> hombres y <span id="losquevivieron"></span> hombres. Y murieron <span id="losquevivieron"></span> hombres y <span id="losquemurieron"></span> mujeres.</p>
+                            <canvas id="porsexo" width="100" height="100" class="m-5"></canvas>
                         </div>
                     </div>
                 </div>
@@ -161,6 +162,12 @@
                 var vivos = 0;
                 var muertos = 0;
 
+                //Sobrevivientes por sexo
+                var vivosH = 0;
+                var vivosM = 0;
+                var muertosH = 0;
+                var muertosM = 0;
+
                 //consultando en cada elemento del arreglo
                 data.forEach((d) => {
                     edades.push(d.Age);
@@ -184,10 +191,26 @@
                     } else if (d.Survived == 1) {
                         vivos = vivos + 1;
                     }
+                    //Sobrevivientes por sexo
+                    if (d.Survived == 1 && d.Sex == "male") {
+                        vivosH = vivosH + 1;
+                    } else if (d.Survived == 1 && d.Sex == "female") {
+                        vivosM = vivosM + 1;
+                    }
+
+                    if (d.Survived == 0 && d.Sex == "male") {
+                        muertosH = muertosH + 1;
+                    } else if (d.Survived == 0 && d.Sex == "female") {
+                        muertosM = muertosM + 1;
+                    }
                 });
 
-                  console.log(vivos);
-                  console.log(muertos);
+                console.log(vivos);
+                console.log(muertos);
+                console.log(vivosH);
+                console.log(vivosM);
+                console.log(muertosH);
+                console.log(muertosM);
 
                 //veamos las edades en la consola
                 console.log(edades);
@@ -208,6 +231,9 @@
                 document.querySelector("#deprimera").innerHTML = cuantosPrimera;
                 document.querySelector("#desegunda").innerHTML = cuantosSegunda;
                 document.querySelector("#detercera").innerHTML = cuantosTercera;
+
+                document.querySelector("#losquevivieron").innerHTML = vivos;
+                document.querySelector("#losquemurieron").innerHTML = muertos;
 
                 //gráficar edadesreales
                 var menores = [];
@@ -265,10 +291,21 @@
                     type: "bar",
                     data: {
                         labels: ["vivos", "muertos"],
-                        datasets: [{ data: [muertos, vivos], label: "Sobrevivientes ", backgroundColor: ["#9ebcda", "#8856a7"] }],
+                        datasets: [{ data: [vivos, muertos], label: "Sobrevivientes", backgroundColor: ["#9ebcda", "#8856a7"] }],
                     },
                 });
 
+                new Chart(document.getElementById("porsexo").getContext("2d"), {
+                    type: "bar",
+                    data: {
+                        labels: ["Sobrevivientes", "Muertos"],
+                        datasets: [
+                            { data: [vivosH, muertosH], label: "Hombres ", backgroundColor: ["#9ebcda"] },
+
+                            { data: [vivosM, muertosM], label: "Mujeres ", backgroundColor: ["#8856a7"] },
+                        ],
+                    },
+                });
             }
             todo().catch((error) => console.error(error));
         </script>
